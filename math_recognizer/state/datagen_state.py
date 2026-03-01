@@ -29,7 +29,7 @@ class DatagenState(rx.State):
             "(async()=>{"
             "const d=await window.exportCanvas_datagen();"
             "if(!d)return;"
-            "const img=new Image();img.src=d;"
+            "const img=document.createElement('img');img.src=d;" # Fix cambié porque no quería descargar la img "const img=new Image();img.src=d;"
             "await new Promise(r=>{img.onload=r;});"
             "const c=document.createElement('canvas');"
             f"c.width={res};c.height={res};"

@@ -115,32 +115,37 @@ def prepare_digit_image(image: np.ndarray) -> np.ndarray:
 
     Retorna un array uint8 de 28x28.
     """
-    # PASO 1: Convertir a escala de grises
-    #   El canvas nos da una imagen RGB; nuestros modelos esperan un solo canal.
-    gray = _to_grayscale(image)
+    # # PASO 1: Convertir a escala de grises
+    # #   El canvas nos da una imagen RGB; nuestros modelos esperan un solo canal.
+    # gray = _to_grayscale(image)
 
-    # PASO 2: Normalizar fondo
-    #   Asegura que siempre empecemos con fondo claro y trazos oscuros,
-    #   sin importar el esquema de colores del canvas.
-    gray = _ensure_light_bg(gray)
+    # # PASO 2: Normalizar fondo
+    # #   Asegura que siempre empecemos con fondo claro y trazos oscuros,
+    # #   sin importar el esquema de colores del canvas.
+    # gray = _ensure_light_bg(gray)
 
-    # PASO 3: Redimensionar al tamaño de entrada del modelo
-    #   En el caso de que cambien la resolución, NO recomendado porque deben cambiar toda el app.
-    #   Cambia la interpolación si usaste otra durante el entrenamiento
-    #   (ej. cv2.INTER_LINEAR, cv2.INTER_CUBIC).
-    resized = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_AREA)
+    # # PASO 3: Redimensionar al tamaño de entrada del modelo
+    # #   En el caso de que cambien la resolución, NO recomendado porque deben cambiar toda el app.
+    # #   Cambia la interpolación si usaste otra durante el entrenamiento
+    # #   (ej. cv2.INTER_LINEAR, cv2.INTER_CUBIC).
+    # resized = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_AREA)
 
-    # PASO 4: Ecualización de histograma
-    #   Mejora el contraste. Elimina esta línea si NO usan equalizeHist
-    #   durante el entrenamiento.
-    equalized = cv2.equalizeHist(resized)
+    # # PASO 4: Ecualización de histograma
+    # #   Mejora el contraste. Elimina esta línea si NO usan equalizeHist
+    # #   durante el entrenamiento.
+    # # equalized = cv2.equalizeHist(resized)
 
-    # PASO 5: Invertir colores (bitwise_not)
-    #   después de esto: fondo=negro (0), trazos=blanco (255) — estilo MNIST.
-    #   Elimina esta línea si tu modelo espera imagenes con fondo claro.
-    inverted = cv2.bitwise_not(equalized)
+    # # PASO 5: Invertir colores (bitwise_not)
+    # #   después de esto: fondo=negro (0), trazos=blanco (255) — estilo MNIST.
+    # #   Elimina esta línea si tu modelo espera imagenes con fondo claro.
+    # inverted = cv2.bitwise_not(resized)
 
-    return inverted
+    # return inverted
+
+    # Usaremos la función transform image to mnist
+    imagen_procesada, _ = transform_image_to_mnist(image)
+    
+    return imagen_procesada
 
 
 # Modificaciones comunes para prepare_digit_image():
@@ -164,27 +169,35 @@ def prepare_operator_image(image: np.ndarray) -> np.ndarray:
 
     Retorna un array uint8 de 28x28.
     """
-    # PASO 1: Convertir a escala de grises
-    #   El canvas nos da una imagen RGB; nuestros modelos esperan un solo canal.
-    gray = _to_grayscale(image)
+    imagen_procesada, _ = transform_image_to_mnist(image)
+    
+    return imagen_procesada
+    # # PASO 1: Convertir a escala de grises
+    # #   El canvas nos da una imagen RGB; nuestros modelos esperan un solo canal.
+    # gray = _to_grayscale(image)
 
-    # PASO 2: Normalizar fondo
-    #   Asegura que siempre empecemos con fondo claro y trazos oscuros,
-    #   sin importar el esquema de colores del canvas.
-    gray = _ensure_light_bg(gray)
+    # # PASO 2: Normalizar fondo
+    # #   Asegura que siempre empecemos con fondo claro y trazos oscuros,
+    # #   sin importar el esquema de colores del canvas.
+    # gray = _ensure_light_bg(gray)
 
-    # PASO 3: Redimensionar al tamaño de entrada del modelo
-    #   Cambia (28, 28) si tu modelo espera otra resolucion.
-    #   Cambia la interpolación si usaste otra durante el entrenamiento
-    #   (ej. cv2.INTER_LINEAR, cv2.INTER_CUBIC).
-    resized = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_AREA)
+    # # Como entrenamos con fondo negro y trazos claros
+    # gray = cv2.bitwise_not(gray)
 
-    # PASO 4: Ecualizacion de histograma
-    #   Mejora el contraste. Elimina esta linea si NO ecualizaste
-    #   durante el entrenamiento.
-    equalized = cv2.equalizeHist(resized)
+    # # PASO 3: Redimensionar al tamaño de entrada del modelo
+    # #   Cambia (28, 28) si tu modelo espera otra resolucion.
+    # #   Cambia la interpolación si usaste otra durante el entrenamiento
+    # #   (ej. cv2.INTER_LINEAR, cv2.INTER_CUBIC).
+    # resized = cv2.resize(gray, (28, 28), interpolation=cv2.INTER_AREA)
 
-    return equalized
+    # # PASO 4: Ecualizacion de histograma
+    # #   Mejora el contraste. Elimina esta linea si NO ecualizaste
+    # #   durante el entrenamiento.
+    # equalized = cv2.equalizeHist(resized)
+
+    # return equalized
+
+
 
 
 # Modificaciones comunes para prepare_operator_image():

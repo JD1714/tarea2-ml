@@ -160,12 +160,12 @@ def _control_panel() -> rx.Component:
             font_size="0.75em", color="#666", font_style="italic",
         ),
         rx.flex(
-            _op_input(GameState.op_label_0, GameState.set_op_label_0, "0:+", "Clase 0"),
-            _op_input(GameState.op_label_1, GameState.set_op_label_1, "1:-", "Clase 1"),
-            _op_input(GameState.op_label_2, GameState.set_op_label_2, "2:x", "Clase 2"),
-            _op_input(GameState.op_label_3, GameState.set_op_label_3, "3:*", "Clase 3"),
-            _op_input(GameState.op_label_4, GameState.set_op_label_4, "4:÷", "Clase 4"),
-            _op_input(GameState.op_label_5, GameState.set_op_label_5, "5:/", "Clase 5"),
+            _op_input(GameState.op_label_43, GameState.set_op_label_43, "0:+", "Clase 0"),
+            _op_input(GameState.op_label_45, GameState.set_op_label_45, "1:-", "Clase 1"),
+            _op_input(GameState.op_label_215, GameState.set_op_label_215, "2:x", "Clase 2"),
+            _op_input(GameState.op_label_42, GameState.set_op_label_42, "3:*", "Clase 3"),
+            _op_input(GameState.op_label_247, GameState.set_op_label_247, "4:÷", "Clase 4"),
+            _op_input(GameState.op_label_47, GameState.set_op_label_47, "5:/", "Clase 5"),
             gap="2", wrap="wrap",
         ),
 

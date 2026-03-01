@@ -14,13 +14,14 @@ from math_recognizer.utils.image_processing import (
 MODELS_DIR = "models/output"
 
 # 0: +, 1: -, 2: x (mult), 3: * (mult), 4: ÷ (div), 5: / (div)
+# Update según los símbolos que nuestro modelo de operadores reconoce, y el orden de clases que usé al entrenar.
 DEFAULT_OPERATOR_LABELS = {
-    0: "+",
-    1: "-",
-    2: "*",
-    3: "*",
-    4: "/",
-    5: "/",
+    43: "+",
+    45: "-",
+    215: "*",
+    42: "*",
+    247: "/",
+    47: "/",
 }
 
 
@@ -59,12 +60,12 @@ class GameState(rx.State):
 
     # Operator label mapping (class index → symbol). Configurable per student.
     # 0: +, 1: -, 2: x (mult), 3: * (mult), 4: ÷ (div), 5: / (div)
-    op_label_0: str = "+"
-    op_label_1: str = "-"
-    op_label_2: str = "*"
-    op_label_3: str = "*"
-    op_label_4: str = "/"
-    op_label_5: str = "/"
+    op_label_43: str = "+"
+    op_label_45: str = "-"
+    op_label_215: str = "*"
+    op_label_42: str = "*"
+    op_label_247: str = "/"
+    op_label_47: str = "/"
 
     # Expression and result
     expression: str = ""
@@ -100,9 +101,11 @@ class GameState(rx.State):
         return np.array(img)
 
     @staticmethod
-    def _flatten(img_28: np.ndarray) -> np.ndarray:
+    def _flatten(img_28: np.ndarray) -> np.ndarray: # update para escalar la imagen
         """Flatten a 28x28 image to (1, 784) float32."""
-        return img_28.reshape(1, -1).astype("float32")
+        flat = img_28.reshape(1, -1).astype("float32")
+
+        return flat / 255.0
 
     @staticmethod
     def _img_to_data_url(img_28x28: np.ndarray) -> str:
@@ -244,12 +247,12 @@ class GameState(rx.State):
             idx = int(pred.flat[0])
 
         label_map = {
-            0: self.op_label_0,
-            1: self.op_label_1,
-            2: self.op_label_2,
-            3: self.op_label_3,
-            4: self.op_label_4,
-            5: self.op_label_5,
+            43: self.op_label_43,
+            45: self.op_label_45,
+            215: self.op_label_215,
+            42: self.op_label_42,
+            247: self.op_label_247,
+            47: self.op_label_47,
         }
         symbol = label_map.get(idx, f"?({idx})")
         scores = GameState._get_model_scores(model, flat)
@@ -490,6 +493,7 @@ class GameState(rx.State):
 
         except Exception as e:
             self.status_message = f"Error: {e}"
+            print(f"Error: {e}") 
         finally:
             self.is_loading = False
 
